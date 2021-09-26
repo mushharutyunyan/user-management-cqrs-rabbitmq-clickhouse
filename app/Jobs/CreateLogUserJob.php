@@ -33,8 +33,10 @@ class CreateLogUserJob implements ShouldQueue
     {
         if($user = UserService::create($this->data)) {
             $user->command = 'created';
-            // You can get info from clickhouse with this style
-//            $logs = $this->client->select('SELECT * FROM users_command_logs LIMIT 2');
+
+            // NOTE: You can get info from clickhouse with this style
+            //$logs = $this->client->select('SELECT * FROM users_command_logs LIMIT 2');
+
             ClickHouseService::run($user);
         }
     }

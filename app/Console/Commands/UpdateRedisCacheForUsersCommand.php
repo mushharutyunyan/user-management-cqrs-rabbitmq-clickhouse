@@ -16,8 +16,6 @@ class UpdateRedisCacheForUsersCommand extends Command
      */
     protected $signature = 'redis:users:update';
 
-    protected $rowsCount = 30;
-
     /**
      * The console command description.
      *
@@ -44,7 +42,7 @@ class UpdateRedisCacheForUsersCommand extends Command
     {
         $cachedUsers = Redis::get('users');
         if(isset($cachedUsers)) {
-            Redis::set('users',User::orderBy('created_at','DESC')->take($this->rowsCount)->get());
+            Redis::set('users',User::getLimitedData()->get());
         }
         Log::info('Redis data for users updated');
     }
