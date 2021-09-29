@@ -15,11 +15,13 @@ class QueryController extends Controller
         $cachedUsers = Redis::get('users');
         if(!isset($cachedUsers)) {
             $users = json_decode($cachedUsers, true);
+            $message = 'Fetched from redis';
         }else {
             $users = User::getLimitedData()->get();
             Redis::set('users', $users);
             $users = $users->toArray();
+            $message = 'Fetched from database';
         }
-        return ClientResponse::success('Fetched from database', $users);
+        return ClientResponse::success($message, $users);
     }
 }
