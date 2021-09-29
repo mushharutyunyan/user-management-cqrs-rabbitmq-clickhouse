@@ -21,9 +21,7 @@ class CommandController extends Controller
 
     public function delete($id)
     {
-        if(!$user = User::find($id)) {
-            abort(404);
-        }
+        $user = User::findOrFail($id);
         $userData = $user;
         if($user->delete()) {
             $userData->command = 'deleted';
